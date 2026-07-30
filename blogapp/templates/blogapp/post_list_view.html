@@ -1,0 +1,14 @@
+{% extends "blogapp/base.html" %}
+{% load static %}
+{% block title %} Post List {% endblock title %}
+{% block content %}
+
+<div>
+         {% for post in posts_summary_list  %}
+                <h1>{{ post.title }} </h1>
+                    <p>{{ post.content }} <a href="{% url "blogapp:post_details" post.id %}"><b>Read more ...</b></a> </p>
+
+         {% endfor %}
+</div>
+
+{% endblock content %}

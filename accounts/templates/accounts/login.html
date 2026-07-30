@@ -10,7 +10,7 @@
                 <h4 class="mb-0">Log In</h4>
             </div>
             <div class="card-body p-4">
-                <form method="post">
+                <form method="POST">
                     {% csrf_token %}
                     
                     <div class="mb-3">
@@ -38,7 +38,7 @@
                 </div>
                 
                 <div class="text-center mt-4">
-                    <p class="mb-0">Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+                    <p class="mb-0">Don't have an account? <a href="{% url 'accounts:register_view' %}">Sign up</a></p>
                 </div>
             </div>
         </div>

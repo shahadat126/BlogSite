@@ -11,7 +11,7 @@ def register_view(request):
             forms.save()
             #login(request,user)
             messages.success(request,"registration successful")
-            return redirect('user_login')
+            return redirect('accounts:user_login')
     else:
         forms=RegistrationForm()
     return render(request,"accounts/register.html",{"form":forms})    
@@ -23,11 +23,11 @@ def Login(request):
         user = authenticate(request,username= username,password=password)
         if user is not None:
             login(request,user)
-            return redirect('blogapp/home')
+            return redirect('blogapp:posts_list')
         else:
             messages.error(request,"Invalid username or password")
-    return render(request,"login.html")
+    return render(request,"accounts/login.html")
 
 def Logout(request):
     logout(request)
-    return redirect('user_login')
+    return redirect('accounts:user_login')
