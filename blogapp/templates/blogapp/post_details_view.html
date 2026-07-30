@@ -2,9 +2,10 @@
 {% block title %} Post Details{% endblock title %}
  
 {% block content %}
+    
 <div class="container">
-     <h1>{{ posts.title }} </h1>
-    <p>{{ posts.author.first_name }} - {{ posts.author.last_name }} </p>
+     <h1><b>Post Title:</b>{{ posts.title }} </h1>
+    <p><b>Author: </b> {{ posts.author.first_name }} - {{ posts.author.last_name }} </p>
     <p>{{ posts.content }} </p>
 </div>
 

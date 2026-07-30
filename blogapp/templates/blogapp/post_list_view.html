@@ -1,8 +1,8 @@
 {% extends "blogapp/base.html" %}
-{% load static %}
+
 {% block title %} Post List {% endblock title %}
 {% block content %}
-
+<h3><a href="/create/">Create Post +</a></h3>
 <div>
          {% for post in posts_summary_list  %}
                 <h1>{{ post.title }} </h1>
