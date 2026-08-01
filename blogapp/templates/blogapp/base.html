@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}E-Commerce Store{% endblock %}</title>
+    <title>{% block title %}Blogsite Development{% endblock %}</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -234,6 +234,9 @@
                         </li>
                         <li class="nav-item {% if '/products/' in request.path %}active{% endif %}">
                             <a class="nav-link" href="{% url "blogapp:posts_list" %}">Post</a>
+                        </li>
+                        <li class="nav-item {% if '/products/' in request.path %}active{% endif %}">
+                            <a class="nav-link" href="{% url "blogapp:post_create" %}">CreatePost</a>
                         </li>
                     </ul>
                     
