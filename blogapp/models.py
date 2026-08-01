@@ -27,9 +27,9 @@ class Post(TimeStampMixin):
     def __str__(self):
         return self.title
 class Comment(TimeStampMixin):
-    post= models.ForeignKey(to=Post,on_delete=models.CASCADE)
+    post= models.ForeignKey(to=Post,on_delete=models.CASCADE,related_name='comments')
     author = models.ForeignKey(to=User,on_delete=models.SET_NULL,null=True,blank=True,related_name='comments')
-    parents = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True,related_name='replies')
+    parent = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True,related_name='replies')
     body = models.CharField()
     
     def __str__(self):

@@ -54,6 +54,7 @@
             <div class="card">
                 <h2><a href="{% url 'blogapp:post_details' post.id %}">{{ post.title }}</a></h2>
                 <div class="meta">
+                    
                     <span class="badge">{{ post.category }}</span>
                     {{ post.created |date:"M d, Y" }}
                 </div>

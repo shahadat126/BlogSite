@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from .models import Post,Category
+from django.shortcuts import render,redirect
+from .models import Post,Category,Comment
 from django.contrib.auth.models import User
-from .forms import PostCreatForm
+from .forms import PostCreatForm,CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q,Count
 # Create your views here.
@@ -66,10 +66,36 @@ def posts_list_view(request):
             })
     except Exception as e:
         return render(request,'blogapp/error.html',{'error':e})
+# def post_details_view(request,pk):
+    # try:
+    #     posts= Post.objects.get(id=pk)
+    #     return render(request,"blogapp/post_details_view.html",{'posts':posts})
 def post_details_view(request,pk):
     try:
-        posts= Post.objects.get(id=pk)
-        return render(request,"blogapp/post_details_view.html",{'posts':posts})
+        post = Post.objects.get(id=pk)
+        parent_comments = post.comments.filter(parent__isnull=True).prefetch_related('replies')
+
+        form = CommentForm()
+        if request.method == "POST" and request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                parent_id = request.POST.get('parent_id')
+                if parent_id:
+                    comment.parent = Comment.objects.get(id=parent_id)
+                comment.save()
+                return redirect('blogapp:post_details',pk=post.id)
+        return render(
+            request,
+            'blogapp/post_details_view.html',
+            {
+                'post':post,
+                'parent_comments':parent_comments,
+                'form':form
+            }
+        )
     except Exception as e:
         return render(request,'blogapp/error.html',{'error':e})
     
