@@ -1,6 +1,6 @@
 {% extends "blogapp/base.html" %}
 
-{% block title %} Post List {% endblock title %}
+{% comment %} {% block title %} Post List {% endblock title %}
 {% block content %}
 <h3><a href="/create/">Create Post +</a></h3>
 <div>
@@ -11,4 +11,87 @@
          {% endfor %}
 </div>
 
-{% endblock content %}
+{% endblock content %} {% endcomment %}
+
+{% block title %}All Posts{% endblock %}
+
+{% block content %}
+<h1>Latest Posts</h1>
+
+<form class="filter-bar" method="get">
+    <input type="text" name="query" value="{{ query }}" placeholder="Search posts...">
+
+    <select name="category_id">
+        <option value="">All Categories</option>
+        {% for c in categories %}
+            <option value="{{ c.id }}"
+                {% if selected_category == c.id|stringformat:"s" %}selected{% endif %}>
+                {{ c.category_name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select name="status">
+        <option value="">Any Status</option>
+        {% for value, label in status_choices %}
+            <option value="{{ value }}"
+                {% if selected_status == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button class="btn" type="submit">Search</button>
+    <a class="btn btn-ghost" href="#">Reset</a>
+</form>
+
+<div class="layout">
+
+    <div class="main-col">
+        <p class="meta">{{ total_result }} post{{ total_result|pluralize }} found</p>
+
+        {% for post in posts_summary_list %}
+            <div class="card">
+                <h2><a href="{% url 'blogapp:post_details' post.id %}">{{ post.title }}</a></h2>
+                <div class="meta">
+                    <span class="badge">{{ post.category }}</span>
+                    {{ post.created |date:"M d, Y" }}
+                </div>
+                <p>{{ post.content }}...
+                    <a class="read-more" href="{% url 'blogapp:post_details' post.id %}">Read More</a>
+                </p>
+            </div>
+        {% empty %}
+            <div class="card"><p>Nothing matched your search.</p></div>
+        {% endfor %}
+    </div>
+
+    <aside class="side-col">
+        {% if user.is_authenticated %}
+            <div class="card">
+                <h4>My Posts</h4>
+                <div class="big-num">{{ my_posts.total_posts }}</div>
+                <p class="meta">total posts created (aggregate)</p>
+            </div>
+
+            <div class="card">
+                <h4>By Category</h4>
+                <p class="meta">annotate</p>
+                <ul class="side-list">
+                    {% for c in my_categories %}
+                    <li>
+                        <span>{{ c.category_name }}</span>
+                        <span class="count">{{ c.my_post_count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="card">
+                <p class="meta">Log in to see your post stats.</p>
+            </div>
+        {% endif %}
+    </aside>
+
+</div>
+{% endblock %}
